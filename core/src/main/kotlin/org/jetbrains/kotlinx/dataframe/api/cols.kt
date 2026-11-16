@@ -557,14 +557,17 @@ public interface ColsColumnsSelectionDsl<out _UNUSED> {
     /** @include [ColumnsSelectionDslVarargStringDocs] */
     @Suppress("INAPPLICABLE_JVM_NAME")
     @JvmName("colsUnTyped")
+    @Interpretable("ColsNames0")
     public fun ColumnsSelectionDsl<*>.cols(firstCol: String, vararg otherCols: String): ColumnSet<*> =
         cols<Any?>(firstCol, *otherCols)
 
     /** @include [ColumnsSelectionDslVarargStringDocs] */
+    @Interpretable("ColsNames0")
     public fun <T> ColumnsSelectionDsl<*>.cols(firstCol: String, vararg otherCols: String): ColumnSet<T> =
         this.asSingleColumn().cols(firstCol, *otherCols).cast()
 
     /** @include [ColumnsSelectionDslVarargStringDocs] */
+    @Interpretable("ColsNames0")
     public operator fun ColumnsSelectionDsl<*>.get(firstCol: String, vararg otherCols: String): ColumnSet<*> =
         cols<Any?>(firstCol, *otherCols)
 
@@ -582,16 +585,19 @@ public interface ColsColumnsSelectionDsl<out _UNUSED> {
     /** @include [SingleColumnColsVarargStringDocs] */
     @Suppress("INAPPLICABLE_JVM_NAME")
     @JvmName("colsUnTyped")
+    @Interpretable("ColsNames1")
     public fun SingleColumn<DataRow<*>>.cols(firstCol: String, vararg otherCols: String): ColumnSet<*> =
         cols<Any?>(firstCol, *otherCols)
 
     /** @include [SingleColumnColsVarargStringDocs] */
+    @Interpretable("ColsNames1")
     public fun <T> SingleColumn<DataRow<*>>.cols(firstCol: String, vararg otherCols: String): ColumnSet<T> =
         colsInternal(listOf(firstCol, *otherCols).map { pathOf(it) }).cast()
 
     /**
      * @include [SingleColumnColsVarargStringDocs]
      */
+    @Interpretable("ColsNames1")
     public operator fun SingleColumn<DataRow<*>>.get(firstCol: String, vararg otherCols: String): ColumnSet<*> =
         cols<Any?>(firstCol, *otherCols)
 
@@ -609,13 +615,16 @@ public interface ColsColumnsSelectionDsl<out _UNUSED> {
     /** @include [StringColsVarargStringDocs] */
     @Suppress("INAPPLICABLE_JVM_NAME")
     @JvmName("colsUnTyped")
+    @Interpretable("ColsNames2")
     public fun String.cols(firstCol: String, vararg otherCols: String): ColumnSet<*> = cols<Any?>(firstCol, *otherCols)
 
     /** @include [StringColsVarargStringDocs] */
+    @Interpretable("ColsNames2")
     public fun <T> String.cols(firstCol: String, vararg otherCols: String): ColumnSet<T> =
         columnGroup(this).cols(firstCol, *otherCols).cast()
 
     /** @include [StringColsVarargStringDocs] */
+    @Interpretable("ColsNames2")
     public operator fun String.get(firstCol: String, vararg otherCols: String): ColumnSet<*> =
         cols<Any?>(firstCol, *otherCols)
 
@@ -664,14 +673,17 @@ public interface ColsColumnsSelectionDsl<out _UNUSED> {
     /** @include [ColumnPathColsVarargStringDocs] */
     @Suppress("INAPPLICABLE_JVM_NAME")
     @JvmName("colsUnTyped")
+    @Interpretable("ColsNames3")
     public fun ColumnPath.cols(firstCol: String, vararg otherCols: String): ColumnSet<*> =
         cols<Any?>(firstCol, *otherCols)
 
     /** @include [ColumnPathColsVarargStringDocs] */
+    @Interpretable("ColsNames3")
     public fun <T> ColumnPath.cols(firstCol: String, vararg otherCols: String): ColumnSet<T> =
         columnGroup(this).cols(firstCol, *otherCols).cast()
 
     /** @include [ColumnPathColsVarargStringDocs] */
+    @Interpretable("ColsNames3")
     public operator fun ColumnPath.get(firstCol: String, vararg otherCols: String): ColumnSet<*> =
         cols<Any?>(firstCol, *otherCols)
 
@@ -695,14 +707,17 @@ public interface ColsColumnsSelectionDsl<out _UNUSED> {
     /** @include [ColumnsSelectionDslVarargColumnPathDocs] */
     @Suppress("INAPPLICABLE_JVM_NAME")
     @JvmName("colsUnTyped")
+    @Interpretable("ColsPaths0")
     public fun ColumnsSelectionDsl<*>.cols(firstCol: ColumnPath, vararg otherCols: ColumnPath): ColumnSet<*> =
         cols<Any?>(firstCol, *otherCols)
 
     /** @include [ColumnsSelectionDslVarargColumnPathDocs] */
+    @Interpretable("ColsPaths0")
     public fun <T> ColumnsSelectionDsl<*>.cols(firstCol: ColumnPath, vararg otherCols: ColumnPath): ColumnSet<T> =
         asSingleColumn().cols<T>(firstCol, *otherCols)
 
     /** @include [ColumnsSelectionDslVarargColumnPathDocs] */
+    @Interpretable("ColsPaths0")
     public operator fun ColumnsSelectionDsl<*>.get(firstCol: ColumnPath, vararg otherCols: ColumnPath): ColumnSet<*> =
         cols<Any?>(firstCol, *otherCols)
 
@@ -722,16 +737,19 @@ public interface ColsColumnsSelectionDsl<out _UNUSED> {
     /** @include [SingleColumnColsVarargColumnPathDocs] */
     @Suppress("INAPPLICABLE_JVM_NAME")
     @JvmName("colsUnTyped")
+    @Interpretable("ColsPaths1")
     public fun SingleColumn<DataRow<*>>.cols(firstCol: ColumnPath, vararg otherCols: ColumnPath): ColumnSet<*> =
         cols<Any?>(firstCol, *otherCols)
 
     /** @include [SingleColumnColsVarargColumnPathDocs] */
+    @Interpretable("ColsPaths1")
     public fun <T> SingleColumn<DataRow<*>>.cols(firstCol: ColumnPath, vararg otherCols: ColumnPath): ColumnSet<T> =
         colsInternal(listOf(firstCol, *otherCols)).cast()
 
     /**
      * @include [SingleColumnColsVarargColumnPathDocs]
      */
+    @Interpretable("ColsPaths1")
     public operator fun SingleColumn<DataRow<*>>.get(
         firstCol: ColumnPath,
         vararg otherCols: ColumnPath,
@@ -753,14 +771,17 @@ public interface ColsColumnsSelectionDsl<out _UNUSED> {
     /** @include [StringColsVarargColumnPathDocs] */
     @Suppress("INAPPLICABLE_JVM_NAME")
     @JvmName("colsUnTyped")
+    @Interpretable("ColsPaths2")
     public fun String.cols(firstCol: ColumnPath, vararg otherCols: ColumnPath): ColumnSet<*> =
         cols<Any?>(firstCol, *otherCols)
 
     /** @include [StringColsVarargColumnPathDocs] */
+    @Interpretable("ColsPaths2")
     public fun <T> String.cols(firstCol: ColumnPath, vararg otherCols: ColumnPath): ColumnSet<T> =
         columnGroup(this).cols(firstCol, *otherCols).cast()
 
     /** @include [StringColsVarargColumnPathDocs] */
+    @Interpretable("ColsPaths2")
     public operator fun String.get(firstCol: ColumnPath, vararg otherCols: ColumnPath): ColumnSet<*> =
         cols<Any?>(firstCol, *otherCols)
 
@@ -813,14 +834,17 @@ public interface ColsColumnsSelectionDsl<out _UNUSED> {
     /** @include [ColumnPathColsVarargColumnPathDocs] */
     @Suppress("INAPPLICABLE_JVM_NAME")
     @JvmName("colsUnTyped")
+    @Interpretable("ColsPaths3")
     public fun ColumnPath.cols(firstCol: ColumnPath, vararg otherCols: ColumnPath): ColumnSet<*> =
         cols<Any?>(firstCol, *otherCols)
 
     /** @include [ColumnPathColsVarargColumnPathDocs] */
+    @Interpretable("ColsPaths3")
     public fun <T> ColumnPath.cols(firstCol: ColumnPath, vararg otherCols: ColumnPath): ColumnSet<T> =
         columnGroup(this).cols(firstCol, *otherCols).cast()
 
     /** @include [ColumnPathColsVarargColumnPathDocs] */
+    @Interpretable("ColsPaths3")
     public operator fun ColumnPath.get(firstCol: ColumnPath, vararg otherCols: ColumnPath): ColumnSet<*> =
         cols<Any?>(firstCol, *otherCols)
 
