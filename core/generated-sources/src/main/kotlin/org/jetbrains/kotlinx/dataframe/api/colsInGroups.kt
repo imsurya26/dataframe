@@ -5,6 +5,7 @@ import org.jetbrains.kotlinx.dataframe.DataColumn
 import org.jetbrains.kotlinx.dataframe.DataFrame
 import org.jetbrains.kotlinx.dataframe.DataRow
 import org.jetbrains.kotlinx.dataframe.annotations.AccessApiOverload
+import org.jetbrains.kotlinx.dataframe.annotations.Interpretable
 import org.jetbrains.kotlinx.dataframe.columns.ColumnGroup
 import org.jetbrains.kotlinx.dataframe.columns.ColumnPath
 import org.jetbrains.kotlinx.dataframe.columns.ColumnSet
@@ -201,6 +202,7 @@ public interface ColsInGroupsColumnsSelectionDsl {
      * @see [ColumnsSelectionDsl.colGroups]
      * @return A [<code>ColumnSet</code>][org.jetbrains.kotlinx.dataframe.columns.ColumnSet] containing the cols.
      */
+    @Interpretable("ColsInGroups4")
     public fun ColumnSet<*>.colsInGroups(): ColumnSet<*> = transform { it.flatMap { it.cols() } }
 
     /**
@@ -309,6 +311,7 @@ public interface ColsInGroupsColumnsSelectionDsl {
      * @see [ColumnsSelectionDsl.colGroups]
      * @return A [<code>ColumnSet</code>][org.jetbrains.kotlinx.dataframe.columns.ColumnSet] containing the cols.
      */
+    @Interpretable("ColsInGroups0")
     public fun ColumnsSelectionDsl<*>.colsInGroups(): ColumnSet<*> = asSingleColumn().colsInGroups()
 
     /**
@@ -418,6 +421,7 @@ public interface ColsInGroupsColumnsSelectionDsl {
      * @see [ColumnsSelectionDsl.colGroups]
      * @return A [<code>ColumnSet</code>][org.jetbrains.kotlinx.dataframe.columns.ColumnSet] containing the cols.
      */
+    @Interpretable("ColsInGroups1")
     public fun SingleColumn<DataRow<*>>.colsInGroups(): ColumnSet<*> =
         ensureIsColumnGroup().allColumnsInternal().colsInGroups()
 
@@ -525,6 +529,7 @@ public interface ColsInGroupsColumnsSelectionDsl {
      * @see [ColumnsSelectionDsl.colGroups]
      * @return A [<code>ColumnSet</code>][org.jetbrains.kotlinx.dataframe.columns.ColumnSet] containing the cols.
      */
+    @Interpretable("ColsInGroups2")
     public fun String.colsInGroups(): ColumnSet<*> = columnGroup(this).colsInGroups()
 
     /**
@@ -686,6 +691,7 @@ public interface ColsInGroupsColumnsSelectionDsl {
      * @see [ColumnsSelectionDsl.colGroups]
      * @return A [<code>ColumnSet</code>][org.jetbrains.kotlinx.dataframe.columns.ColumnSet] containing the cols.
      */
+    @Interpretable("ColsInGroups3")
     public fun ColumnPath.colsInGroups(): ColumnSet<*> = columnGroup(this).colsInGroups()
 }
 
