@@ -300,9 +300,6 @@ public fun <T> DataFrame<T>.getColumns(vararg columns: String): List<DataColumn<
  * Returns the zero-based index of the top-level column with the same name as [col],
  * or `-1` if there is no such column; it doesn't throw.
  *
- * Only the [name][DataColumn.name] of [col] is compared, not its values,
- * so a nested column has an index only if a top-level column has the same name.
- *
  * For more information: {@include [DocumentationUrls.GetColumn]}
  *
  * See also [getColumnIndex][ColumnsContainer.getColumnIndex], that takes the column name,
@@ -324,6 +321,8 @@ public fun <T> DataFrame<T>.getColumnIndex(col: DataColumn<*>): Int = getColumnI
 /**
  * Returns a new [DataFrame] with the rows at the zero-based indices in [range],
  * throwing if any of them is out of bounds.
+ * In case the [range] is exactly the same as the range of indices in this [DataFrame],
+ * the function returns this [DataFrame] itself.
  *
  * It is the same as [get][DataFrame.get] with an [IntRange].
  *
@@ -357,9 +356,9 @@ public fun <T> DataFrame<T>.getRows(indices: Iterable<Int>): DataFrame<T> = get(
  *
  * For more information: {@include [DocumentationUrls.GetRow]}
  *
- * See also [get][DataFrame.get], that throws instead of returning `null`,
- * [getRows], that returns several rows,
- * and [firstOrNull], [lastOrNull], that return the first or the last row, or `null` if this [DataFrame] is empty.
+ * See also:
+ *  - [get][DataFrame.get], [getRows] that return several rows and throw instead of returning `null`;
+ *  - [firstOrNull], [lastOrNull], that return the first or the last row, or `null` if this [DataFrame] is empty.
  *
  * ### Examples
  *
