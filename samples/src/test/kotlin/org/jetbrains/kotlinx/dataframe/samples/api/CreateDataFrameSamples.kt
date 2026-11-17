@@ -6,107 +6,31 @@ import io.kotest.matchers.shouldBe
 import org.jetbrains.kotlinx.dataframe.AnyFrame
 import org.jetbrains.kotlinx.dataframe.DataColumn
 import org.jetbrains.kotlinx.dataframe.DataFrame
-import org.jetbrains.kotlinx.dataframe.annotations.DataSchema
 import org.jetbrains.kotlinx.dataframe.api.DynamicDataFrameBuilder
-import org.jetbrains.kotlinx.dataframe.api.Infer
 import org.jetbrains.kotlinx.dataframe.api.ValueProperty
 import org.jetbrains.kotlinx.dataframe.api.add
-import org.jetbrains.kotlinx.dataframe.api.column
 import org.jetbrains.kotlinx.dataframe.api.columnOf
 import org.jetbrains.kotlinx.dataframe.api.dataFrameOf
 import org.jetbrains.kotlinx.dataframe.api.emptyDataFrame
+import org.jetbrains.kotlinx.dataframe.api.into
 import org.jetbrains.kotlinx.dataframe.api.map
-import org.jetbrains.kotlinx.dataframe.api.named
 import org.jetbrains.kotlinx.dataframe.api.preserve
-import org.jetbrains.kotlinx.dataframe.api.sortBy
-import org.jetbrains.kotlinx.dataframe.api.toColumn
-import org.jetbrains.kotlinx.dataframe.api.toColumnOf
 import org.jetbrains.kotlinx.dataframe.api.toDataFrame
 import org.jetbrains.kotlinx.dataframe.api.value
-import org.jetbrains.kotlinx.dataframe.explainer.TransformDataFrameExpressions
+import org.jetbrains.kotlinx.dataframe.samples.DataFrameSampleHelper
+import org.jetbrains.kotlinx.dataframe.type
+import org.jetbrains.kotlinx.dataframe.values
 import org.junit.Test
 import java.io.File
 import kotlin.random.nextInt
 import kotlin.random.Random as KotlinRandom
+import kotlin.reflect.typeOf
 
-class Create : TestBase() {
-
-    @Test
-    @TransformDataFrameExpressions
-    fun createValueByColumnOf() {
-        // SampleStart
-        // Create ValueColumn with name 'student' and two elements of type String
-        val student by columnOf("Alice", "Bob")
-        // SampleEnd
-    }
+class CreateDataFrameSamples : DataFrameSampleHelper("createDataFrame", "api") {
 
     @Test
-    @TransformDataFrameExpressions
-    fun createValueByToColumn() {
-        // SampleStart
-        listOf("Alice", "Bob").toColumn("name")
-        // SampleEnd
-    }
-
-    @Test
-    @TransformDataFrameExpressions
-    fun createValueColumnInferred() {
-        // SampleStart
-        val values: List<Any?> = listOf(1, 2.5)
-
-        values.toColumn("data") // type: Any?
-        values.toColumn("data", Infer.Type) // type: Number
-        values.toColumn("data", Infer.Nulls) // type: Any
-        // SampleEnd
-    }
-
-    @Test
-    @TransformDataFrameExpressions
-    fun createValueColumnOfType() {
-        // SampleStart
-        val values: List<Any?> = listOf(1, 2.5)
-
-        values.toColumnOf<Number?>("data") // type: Number?
-        // SampleEnd
-    }
-
-    @Test
-    @TransformDataFrameExpressions
-    fun createColumnRenamed() {
-        // SampleStart
-        val column = columnOf("Alice", "Bob") named "student"
-        // SampleEnd
-    }
-
-    @Test
-    @TransformDataFrameExpressions
-    fun createColumnGroup() {
-        // SampleStart
-        val firstName by columnOf("Alice", "Bob")
-        val lastName by columnOf("Cooper", "Marley")
-
-        // Create ColumnGroup with two nested columns
-        val fullName by columnOf(firstName, lastName)
-        // SampleEnd
-    }
-
-    @Test
-    @TransformDataFrameExpressions
-    fun createFrameColumn() {
-        // SampleStart
-        val df1 = dataFrameOf("name", "age")("Alice", 20, "Bob", 25)
-        val df2 = dataFrameOf("name", "temp")("Charlie", 36.6)
-
-        // Create FrameColumn with two elements of type DataFrame
-        val frames by columnOf(df1, df2)
-        // SampleEnd
-    }
-
-    @Test
-    @TransformDataFrameExpressions
     fun createEmptyDataFrame() {
         // SampleStart
-        @DataSchema
         class Person(val name: String, val age: Int)
 
         val df = emptyDataFrame<Person>()
@@ -116,7 +40,42 @@ class Create : TestBase() {
     }
 
     @Test
-    @TransformDataFrameExpressions
+    fun createDataFrameOfPairs() {
+        // SampleStart
+        // DataFrame with 2 columns and 3 rows
+        val df = dataFrameOf(
+            "name" to listOf("Alice", "Bob", "Charlie"),
+            "age" to listOf(15, 20, 100),
+        )
+        // SampleEnd
+    }
+
+    @Test
+    fun createNestedDataFrameInplace() {
+        // SampleStart
+        // DataFrame with 2 columns and 3 rows
+        val df = dataFrameOf(
+            "name" to columnOf(
+                "firstName" to columnOf("Alice", "Bob", "Charlie"),
+                "lastName" to columnOf("Cooper", "Dylan", "Daniels"),
+            ),
+            "age" to columnOf(15, 20, 100),
+        )
+        // SampleEnd
+    }
+
+    @Test
+    fun createDataFrameFromColumns() {
+        // SampleStart
+        // DataFrame with 2 columns
+        val df = dataFrameOf(
+            "name" to columnOf("Alice", "Bob", "Charlie"),
+            "age" to columnOf(15, 20, 22)
+        )
+        // SampleEnd
+    }
+
+    @Test
     fun createDataFrameOf() {
         // SampleStart
         // DataFrame with 2 columns and 3 rows
@@ -129,7 +88,30 @@ class Create : TestBase() {
     }
 
     @Test
-    @TransformDataFrameExpressions
+    fun createDataFrameBuilderFill() {
+        // SampleStart
+        // Every column: 3 rows filled with 0
+        val filled = dataFrameOf("a", "b").fill(3, 0)
+        // Every column: 3 rows of null values of type Int?
+        val empty = dataFrameOf("a", "b").nulls<Int>(3)
+        // SampleEnd
+        filled["a"].values shouldBe listOf(0, 0, 0)
+        empty["a"].type shouldBe typeOf<Int?>()
+    }
+
+    @Test
+    fun createDataFrameFromMap() {
+        // SampleStart
+        val map = mapOf("name" to listOf("Alice", "Bob", "Charlie"), "age" to listOf(15, 20, 22))
+
+        // DataFrame with 2 columns
+        map
+            .toDataFrame()
+            // SampleEnd
+            .saveDfHtmlSample()
+    }
+
+    @Test
     fun createRandomDataFrame() {
         // stable random + clean examples
         @Suppress("LocalVariableName")
@@ -144,11 +126,11 @@ class Create : TestBase() {
             "price" from { Random.nextDouble(10.0, 500.0) }
             "inStock" from { Random.nextInt(0..100) }
         }
-        // SampleEnd
+            // SampleEnd
+            .saveDfHtmlSample()
     }
 
     @Test
-    @TransformDataFrameExpressions
     fun createNestedRandomDataFrame() {
         // stable random + clean examples
         @Suppress("LocalVariableName")
@@ -189,38 +171,11 @@ class Create : TestBase() {
                 }
             }
         }
-        // SampleEnd
+            // SampleEnd
+            .saveDfHtmlSample()
     }
 
     @Test
-    @TransformDataFrameExpressions
-    fun createDataFrameOfPairs() {
-        // SampleStart
-        // DataFrame with 2 columns and 3 rows
-        val df = dataFrameOf(
-            "name" to listOf("Alice", "Bob", "Charlie"),
-            "age" to listOf(15, 20, 100),
-        )
-        // SampleEnd
-    }
-
-    @Test
-    @TransformDataFrameExpressions
-    fun createNestedDataFrameInplace() {
-        // SampleStart
-        // DataFrame with 2 columns and 3 rows
-        val df = dataFrameOf(
-            "name" to columnOf(
-                "firstName" to columnOf("Alice", "Bob", "Charlie"),
-                "lastName" to columnOf("Cooper", "Dylan", "Daniels"),
-            ),
-            "age" to columnOf(15, 20, 100),
-        )
-        // SampleEnd
-    }
-
-    @Test
-    @TransformDataFrameExpressions
     fun createDataFrameWithFill() {
         // SampleStart
         // Multiplication table
@@ -229,38 +184,14 @@ class Create : TestBase() {
                 "$x" from { x * it }
             }
         }
-        // SampleEnd
+            // SampleEnd
+            .saveDfHtmlSample()
     }
 
     @Test
-    @TransformDataFrameExpressions
-    fun createDataFrameFromColumns() {
-        // SampleStart
-        // DataFrame with 2 columns
-        val df = dataFrameOf(
-            "name" to columnOf("Alice", "Bob", "Charlie"),
-            "age" to columnOf(15, 20, 22)
-        )
-        // SampleEnd
-    }
-
-    @Test
-    @TransformDataFrameExpressions
-    fun createDataFrameFromMap() {
-        // SampleStart
-        val map = mapOf("name" to listOf("Alice", "Bob", "Charlie"), "age" to listOf(15, 20, 22))
-
-        // DataFrame with 2 columns
-        map.toDataFrame()
-        // SampleEnd
-    }
-
-    @Test
-    @TransformDataFrameExpressions
     fun readDataFrameFromValues() {
         // SampleStart
         val names = listOf("Alice", "Bob", "Charlie")
-        // TODO fix with plugin???
         val df = names.toDataFrame() as DataFrame<ValueProperty<String>>
         df.add("length") { value.length }
         // SampleEnd
@@ -268,7 +199,34 @@ class Create : TestBase() {
     }
 
     @Test
-    @TransformDataFrameExpressions
+    fun toDataFrameColumn() {
+        // SampleStart
+        val files = listOf(File("data.csv"), File("data1.csv"))
+        val df = files.toDataFrame(columnName = "data")
+        // SampleEnd
+        df.saveDfHtmlSample()
+    }
+
+    @Test
+    fun toDataFrameLists() {
+        // SampleStart
+        val lines = """
+            1
+            00:00:05,000 --> 00:00:07,500
+            This is the first subtitle.
+
+            2
+            00:00:08,000 --> 00:00:10,250
+            This is the second subtitle.
+        """.trimIndent().lines()
+
+        lines.chunked(4) { it.take(3) }
+            .toDataFrame(header = listOf("n", "timestamp", "text"))
+            // SampleEnd
+            .saveDfHtmlSample()
+    }
+
+    @Test
     fun readDataFrameFromObject() {
         // SampleStart
         data class Person(val name: String, val age: Int)
@@ -277,10 +235,10 @@ class Create : TestBase() {
 
         val df = persons.toDataFrame()
         // SampleEnd
+        df.saveDfHtmlSample()
     }
 
     @Test
-    @TransformDataFrameExpressions
     fun readDataFrameFromDeepObject() {
         // SampleStart
         data class Name(val firstName: String, val lastName: String)
@@ -296,10 +254,10 @@ class Create : TestBase() {
 
         val df = students.toDataFrame(maxDepth = 1)
         // SampleEnd
+        df.saveDfHtmlSample()
     }
 
     @Test
-    @TransformDataFrameExpressions
     fun readDataFrameFromDeepObjectWithExclude() {
         data class Name(val firstName: String, val lastName: String)
 
@@ -330,10 +288,10 @@ class Create : TestBase() {
             }
         }
         // SampleEnd
+        df.saveDfHtmlSample()
     }
 
     @Test
-    @TransformDataFrameExpressions
     fun duplicatedColumns() {
         // SampleStart
         fun peek(vararg dataframes: AnyFrame): AnyFrame {
@@ -346,33 +304,7 @@ class Create : TestBase() {
 
         val col by columnOf(1, 2, 3)
         peek(dataFrameOf(col), dataFrameOf(col))
-        // SampleEnd
-    }
-
-    @Test
-    @TransformDataFrameExpressions
-    fun toDataFrameColumn() {
-        // SampleStart
-        val files = listOf(File("data.csv"), File("data1.csv"))
-        val df = files.toDataFrame(columnName = "data")
-        // SampleEnd
-    }
-
-    @Test
-    @TransformDataFrameExpressions
-    fun toDataFrameLists() {
-        // SampleStart
-        val lines = """
-            1
-            00:00:05,000 --> 00:00:07,500
-            This is the first subtitle.
-
-            2
-            00:00:08,000 --> 00:00:10,250
-            This is the second subtitle.
-        """.trimIndent().lines()
-
-        lines.chunked(4) { it.take(3) }.toDataFrame(header = listOf("n", "timestamp", "text"))
-        // SampleEnd
+            // SampleEnd
+            .saveDfHtmlSample()
     }
 }
