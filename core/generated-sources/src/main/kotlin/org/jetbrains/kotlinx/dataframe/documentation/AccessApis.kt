@@ -44,7 +44,8 @@ internal interface AccessApis {
      * including for operations and retrieving column values in row expressions —
      * is through auto-generated extension properties.
      *
-     * These properties are generated based on the
+     * These properties are generated with
+     * the [<code>Compiler Plugin</code>][DocumentationUrls.CompilerPlugin] based on the
      * [<code>dataframe schema</code>][org.jetbrains.kotlinx.dataframe.schema.DataFrameSchema],
      * with their names and types inferred from the names and types of the corresponding columns.
      * This also works for hierarchical [<code>DataFrame</code>][DataFrame] structures
@@ -53,7 +54,7 @@ internal interface AccessApis {
      *
      * ### Example
      *
-     * Given the following [<code>DataFrame</code>][DataFrame]:
+     * Given the following [<code>DataFrame</code>][DataFrame] `personInfoDf`:
      *
      * | name | age | height |
      * |-------|-----|--------|
@@ -67,13 +68,16 @@ internal interface AccessApis {
      *
      * ```kotlin
      * // Access the "name" column
-     * df.name
+     * val nameCol: DataColumn<String> = personInfoDf.name
+     *
+     * // Take the "name" value from the first row
+     * val nameValue: String = personInfoDf.first().name
      *
      * // Select the "age" and "height" columns
-     * df.select { age and height }
+     * personInfoDf.select { age and height }
      *
      * // Filter rows where "age" > 18 and "name" starts with 'A'
-     * df.filter { age > 18 && name.startsWith("A") }
+     * personInfoDf.filter { age > 18 && name.startsWith("A") }
      * ```
      *
      * For more information: [See Extension Properties API on the documentation website.](https://kotlin.github.io/dataframe/extensionpropertiesapi.html)
