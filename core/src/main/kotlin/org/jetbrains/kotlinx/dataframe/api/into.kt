@@ -79,6 +79,8 @@ public fun <T> GroupBy<T, *>.into(column: KProperty<DataFrame<*>>): DataFrame<T>
  * @return A new [DataFrame] that includes the grouping key columns together
  * with a list of values computed on all rows of corresponding groups.
  */
+@Refine
+@Interpretable("GroupByIntoTransformed")
 public inline fun <T, G, reified V> GroupBy<T, G>.into(
     columnName: String? = null,
     noinline expression: RowExpression<G, V>,
